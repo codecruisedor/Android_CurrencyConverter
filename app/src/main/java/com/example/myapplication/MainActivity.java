@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,8 +12,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     euro2,pound2,dollar2,bitcoin2,rupee2,australian_dollar2,canadian_dollar2,yen2,dinar2,submit,clear;
     EditText Input;
     TextView result;
+    String from="",to="",URL = "";
     ArrayList<Button> pressedButtons1,pressedButtons2;
 
     @Override
@@ -227,181 +238,208 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
     public void ConvertCurrency(Button f,Button t){
+
         String input =  Input.getText().toString();
         if(TextUtils.isEmpty(input)){
             Input.setError("Empty User Input");
         }
-        DecimalFormat number_format = new DecimalFormat("#.00");
         result.setText(null);
-        double i = Double.parseDouble(input);
-        double res = 0;
 
 
         if(f == euro){
+            from = "euro";
             if(t == rupee2) {
-                res = i*86.14;
+                to = "inr";
             }else if(t == dollar2){
-                res = i*1.17;
+                to = "usd";
             }else if(t == australian_dollar2){
-                res = i*1.66;
+                to = "aud";
             }else if(t == canadian_dollar2){
-                res = i*1.54;
+                to = "cad";
             }else if(t == yen2){
-                res = i*123.35;
+                to = "yen";
             }else if(t == bitcoin2){
-                res = i*0.0001030265;
+                to = "bitcoin";
             }else if(t == pound2){
-                res = i*0.90;
+                to = "pound";
             }else if(t == dinar2){
-                res = i*4.30;
+                to = "dinar";
             }
         }else if(f == pound){
+            from = "pound";
             if(t == rupee2) {
-                res = i*94.88;
+                to = "rupee";
             }else if(t == dollar2){
-                res = i*1.29;
+                to = "usd";
             }else if(t == australian_dollar2){
-                res = i*1.82;
+                to = "aud";
             }else if(t == canadian_dollar2){
-                res = i*1.71;
+                to = "cad";
             }else if(t == yen2){
-                res = i*136.12;
+                to = "yen";
             }else if(t == bitcoin2){
-                res = i*0.00011;
+                to = "bitcoin";
             }else if(t == euro2){
-                res = i*1.10;
+                to = "euro";
             }else if(t == dinar2){
-                res = i*4.74;
+                to = "dinar";
             }
         }else if(f == dollar){
+            from = "dollar";
             if(t == rupee2) {
-                res = i*73.45;
+                to = "rupee";
             }else if(t == pound2){
-                res = i*0.77;
+                to = "pound";
             }else if(t == australian_dollar2){
-                res = i*1.41;
+                to = "aud";
             }else if(t == canadian_dollar2){
-                res = i*1.32;
+                to = "cad";
             }else if(t == yen2){
-                res = i*105.39;
+                to = "yen";
             }else if(t == bitcoin2){
-                res = i*0.000087;
+                to = "bitcoin";
             }else if(t == euro2){
-                res = i*0.86;
+                to = "euro";
             }else if(t == dinar2){
-                res = i*3.67;
+                to = "dinar";
             }
         }else if(f == rupee){
+            from = "rupee";
             if(t == dollar2) {
-                res = i*0.014;
+                to = "usd";
             }else if(t == pound2){
-                res = i*0.011;
+                to = "pound";
             }else if(t == australian_dollar2){
-                res = i*0.019;
+                to = "aud";
             }else if(t == canadian_dollar2){
-                res = i*0.018;
+                to = "cad";
             }else if(t == yen2){
-                res = i*1.43;
+                to = "yen";
             }else if(t == bitcoin2){
-                res = i*0.0000012;
+                to = "bitcoin";
             }else if(t == euro2){
-                res = i*0.012;
+                to = "euro";
             }else if(t == dinar2){
-                res = i*0.050;
+                to = "dinar";
             }
         }else if(f == australian_dollar){
+            from = "aud";
             if(t == dollar2) {
-                res = i*0.71;
+                to = "usd";
             }else if(t == pound2){
-                res = i*0.55;
+                to = "pound";
             }else if(t == rupee2){
-                res = i*52.03;
+                to = "rupee";
             }else if(t == canadian_dollar2){
-                res = i*0.94;
+                to = "cad";
             }else if(t == yen2){
-                res = i*74.65;
+                to = "yen";
             }else if(t == bitcoin2){
-                res = i*0.000062;
+                to = "bitcoin";
             }else if(t == euro2){
-                res = i*0.61;
+                to = "euro";
             }else if(t == dinar2){
-                res = i*2.60;
+                to = "dinar";
             }
         }else if(f == canadian_dollar){
+            from = "cad";
             if(t == dollar2) {
-                res = i*0.71;
+                to = "usd";
             }else if(t == pound2){
-                res = i*0.55;
+                to = "pound";
             }else if(t == rupee2){
-                res = i*52.03;
+                to = "rupee";
             }else if(t == australian_dollar2){
-                res = i*0.94;
+                to = "aud";
             }else if(t == yen2){
-                res = i*74.65;
+                to = "yen";
             }else if(t == bitcoin2){
-                res = i*0.000062;
+                to = "bitcoin";
             }else if(t == euro2){
-                res = i*0.61;
+                to = "euro";
             }else if(t == dinar2){
-                res = i*2.60;
+                to = "dinar";
             }
         }else if(f == yen){
+            from = "yen";
             if(t == dollar2) {
-                res = i*0.0095;
+                to = "usd";
             }else if(t == pound2){
-                res = i*0.0073;
+                to = "pound";
             }else if(t == rupee2){
-                res = i*0.70;
+                to = "rupee";
             }else if(t == australian_dollar2){
-                res = i*0.013;
+                to = "aud";
             }else if(t == canadian_dollar2){
-                res = i*0.013;
+                to = "cad";
             }else if(t == bitcoin2){
-                res = i*0.00;
+                to = "bitcoin";
             }else if(t == euro2){
-                res = i*0.0081;
+                to = "euro";
             }else if(t == dinar2){
-                res = i*0.035;
+                to = "dinar";
             }
         }else if(f == bitcoin){
+            from = "bitcoin";
             if(t == dollar2) {
-                res = i*11382;
+                to = "usd";
             }else if(t == pound2){
-                res = i*8812.68;
+                to = "pound";
             }else if(t == rupee2){
-                res = i*836052.29;
+                to = "rupee";
             }else if(t == australian_dollar2){
-                res = i*16073.66 ;
-            }else if(t == canadian_dollar2){
-                res = i*15063.22 ;
+                to = "aud";
             }else if(t == yen2){
-                res = i*1199543.29;
+                to = "yen";
             }else if(t == euro2){
-                res = i*9731.61 ;
+                to = "euro";
             }else if(t == dinar2){
-                res = i *41802.80;
+                to = "dinar";
             }
         }else if(f == dinar){
+            from = "dinar";
             if(t == dollar2) {
-                res = i*0.27;
+                to = "usd";
             }else if(t == pound2){
-                res = i*0.21;
+                to = "pound";
             }else if(t == rupee2){
-                res = i*20.00;
+                to = "rupee";
             }else if(t == australian_dollar2){
-                res = i*0.38;
+                to = "aud";
             }else if(t == canadian_dollar2){
-                res = i*0.36;
+                to = "cad";
             }else if(t == yen2){
-                res = i*28.69;
+                to = "yen";
             }else if(t == euro2){
-                res = i*0.23;
+                to = "euro";
             }else if(t == bitcoin2){
-                res = i *0.000024;
+                to = "bitcoin";
             }
         }
 
-        result.setText(""+number_format.format(res));
+        new doIT().execute();
+    }
+    public class doIT extends AsyncTask<Void,Void,Void> {
+        String value = "";
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                URL = "https://www.google.com/search?q="+Input.getText().toString()+"+"+from+"+"+"to"+"+"+to+"&oq=10+&aqs=chrome.6.69i59j69i57j35i39j0i67i457j0i67l2j0i10i67j69i65.6429j1j7&sourceid=chrome&ie=UTF-8";
+                Document document = Jsoup.connect(URL).get();
+                Elements elements = document.getElementsByClass("DFlfde SwHCTb");
+                for (Element element: elements){
+                    value = String.valueOf(element.text());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } return null;
+        }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            result.setText(value);
+            super.onPostExecute(aVoid);
+        }
     }
 }
