@@ -246,6 +246,10 @@ public class MainActivity extends AppCompatActivity {
             Input.setError("Empty User Input");
         }
         result.setText(null);
+        if (f.getText().toString().equals(t.getText().toString())){
+            Toast.makeText(MainActivity.this,"Select two different currencies!",Toast.LENGTH_SHORT).show();
+            return;
+        }
 
 
         if(f == euro){
