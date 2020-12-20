@@ -190,7 +190,6 @@ public class MainActivity extends AppCompatActivity {
                    Context context = getApplicationContext();
                    CharSequence text = "Please select different currencies to convert";
                    int duration = Toast.LENGTH_SHORT;
-
                    Toast toast = Toast.makeText(context, text, duration);
                    toast.show();
                }else{
