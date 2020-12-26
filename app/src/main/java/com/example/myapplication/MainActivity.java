@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -26,423 +28,237 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button euro,pound,dollar,bitcoin,rupee,australian_dollar,canadian_dollar,yen,dinar,
-    euro2,pound2,dollar2,bitcoin2,rupee2,australian_dollar2,canadian_dollar2,yen2,dinar2,submit,clear;
+    Button submit, clear;
     EditText Input;
     TextView result;
-    String from="",to="",URL = "";
-    ArrayList<Button> pressedButtons1,pressedButtons2;
+    String URL = "";
+    AutoCompleteTextView autoCompleteTextView_currency1, autoCompleteTextView_currency2;
+    String[] array_of_currencies = {"UAE Dirham",
+            "Afghani",
+            "Lek",
+            "Armeniam Dram",
+            "Netherlands Antillian Guilder",
+            "Kwanza",
+            "Argentine Peso",
+            "Australian Dollar",
+            "Aruban Florin",
+            "Azerbaijanian Manat",
+            "Convertible Mark",
+            "Barbados Dollar",
+            "Taka",
+            "Bulgarian Lev",
+            "Bahraini Dinar",
+            "Burundi Franc",
+            "Bermudian Dollar",
+            "Brunei Dollar",
+            "Boliviano",
+            "Brazilian Real",
+            "Bahamian Dollar",
+            "Ngultrum",
+            "Pula",
+            "Belarusian Ruble",
+            "Belize Dollar",
+            "Canadian Dollar",
+            "Congolese Franc",
+            "Swiss Franc",
+            "Swiss Franc",
+            "Chilean Peso",
+            "Yuan Renminbi",
+            "Colombian Peso",
+            "Costa Rican Colón",
+            "Cuban Peso",
+            "Cabo Verde Escudo",
+            "Czech Koruna",
+            "Djibouti Franc",
+            "Danish Krone",
+            "Dominican Peso",
+            "Algerian Dinar",
+            "Egyptian Pound",
+            "Nakfa",
+            "Ethiopian Birr",
+            "Euro",
+            "Fiji Dollar",
+            "Falkland Islands Pound",
+            "Pound Sterling",
+            "Lari",
+            "Ghana Cedi",
+            "Gibraltar Pound",
+            "Dalasi",
+            "Guinea Franc",
+            "Quetzal",
+            "Guyana Dollar",
+            "Hong Kong Dollar",
+            "Lempira",
+            "Croatian Kuna",
+            "Gourde",
+            "Forint",
+            "Rupiah",
+            "New Israeli Sheqel",
+            "Indian Rupee",
+            "Iraqi Dinar",
+            "Iranian Rial",
+            "Iceland Króna",
+            "Jamaican Dollar",
+            "Jordanian Dinar",
+            "Yen",
+            "Kenyan Shilling",
+            "Som",
+            "Riel",
+            "Comoro Franc",
+            "North Korean Won",
+            "Won",
+            "Kuwaiti Dinar",
+            "Cayman Islands Dollar",
+            "Tenge",
+            "Kip",
+            "Lebanese Pound",
+            "Sri Lanka Rupee",
+            "Liberian Dollar",
+            "Loti",
+            "Libyan Dinar",
+            "Moroccan Dirham",
+            "Moroccan Dirham",
+            "Moldovan Leu",
+            "Malagasy Ariary",
+            "Denar",
+            "Kyat",
+            "Tugrik",
+            "Patac",
+            "Ouguiya",
+            "Mauritius Rupee",
+            "Rufiyaa",
+            "Malawi Kwacha",
+            "Mexican Peso",
+            "Malaysian Ringgit",
+            "Metical",
+            "Namibian Dollar",
+            "Naira",
+            "Córdoba Oro",
+            "rwegian Krone",
+            "Nepalese Rupee",
+            "New Zealand Dollar",
+            "Rial Omani",
+            "Balboa",
+            "Sol",
+            "Kina",
+            "Philippine Peso",
+            "Pakistan Rupee",
+            "Zloty",
+            "Guaraní",
+            "Qatari Rial",
+            "Romanian Leu",
+            "Serbian Dinar",
+            "Russian Ruble",
+            "Rwanda Franc",
+            "Saudi Riyal",
+            "Solomon Islands Dollar",
+            "Seychelles Rupee",
+            "Sudanese Pound",
+            "Swedish Krona",
+            "Singapore Dollar",
+            "Saint Helena Pound",
+            "Leone",
+            "Somali Shilling",
+            "Suriname Dollar",
+            "South Sudanese Pound",
+            "Dobra",
+            "Syrian Pound",
+            "Lilangeni",
+            "Baht",
+            "Somoni",
+            "Turkmenistan New Manat",
+            "Tunisian Dinar",
+            "anga",
+            "Turkish Lira",
+            "Trinidad and Tobago Dollar",
+            "New Taiwan Dollar",
+            "Tanzanian Shilling",
+            "Hryvnia",
+            "Uganda Shilling",
+            "US Dollar",
+            "Peso Uruguayo",
+            "Uzbekistan Sum",
+            "Bolívar",
+            "Dong",
+            "Vatu",
+            "Tala",
+            "CFA Franc (BEAC)",
+            "East Caribbean Dollar",
+            "East Caribbean Dollar",
+            "CFA Franc (BCEAO)",
+            "CFP Franc",
+            "Yemeni Rial",
+            "Rand",
+            "Zambian Kwacha",
+            "Zimbabwe Dollar"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        pressedButtons1 = new ArrayList<>();
-        pressedButtons2 = new ArrayList<>();
 
-
-        euro = findViewById(R.id.euro);
-        pound = findViewById(R.id.pound);
-        dollar = findViewById(R.id.dollar);
-        bitcoin = findViewById(R.id.bitcoin);
-        rupee = findViewById(R.id.rupee);
-        australian_dollar = findViewById(R.id.australian_dollar);
-        canadian_dollar = findViewById(R.id.canadian_dollar);
-        yen = findViewById(R.id.yen);
-        dinar = findViewById(R.id.dinar);
-
-        euro2 = findViewById(R.id.euro2);
-        pound2 = findViewById(R.id.pound2);
-        dollar2= findViewById(R.id.dollar2);
-        bitcoin2 = findViewById(R.id.bitcoin2);
-        rupee2 = findViewById(R.id.rupee2);
-        australian_dollar2 = findViewById(R.id.australian_dollar2);
-        canadian_dollar2 = findViewById(R.id.canadian_dollar2);
-        yen2 = findViewById(R.id.yen2);
-        dinar2 = findViewById(R.id.dinar2);
+        autoCompleteTextView_currency1 = findViewById(R.id.autoComplete_currency1);
+        autoCompleteTextView_currency2 = findViewById(R.id.autoComplete_currency2);
         submit = findViewById(R.id.submit_button);
 
         Input = findViewById(R.id.editText);
         result = findViewById(R.id.textView);
         clear = findViewById(R.id.clear_button);
 
-        euro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                button_clicked_process(euro);
-            }
-        });
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity.this,R.layout.support_simple_spinner_dropdown_item,array_of_currencies);
 
-        pound.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                button_clicked_process(pound);
-            }
-        });
-        dollar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                button_clicked_process(dollar);
-            }
-        });
-        bitcoin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                button_clicked_process(bitcoin);
-            }
-        });
-        rupee.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                button_clicked_process(rupee);
-            }
-        });
-        australian_dollar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                button_clicked_process(australian_dollar);
-            }
-        });
-        canadian_dollar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                button_clicked_process(canadian_dollar);
-            }
-        });
-        yen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                button_clicked_process(yen);
-            }
-        });
-        dinar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                button_clicked_process(dinar);
-            }
-        });
+        autoCompleteTextView_currency1.setAdapter(adapter);
+        autoCompleteTextView_currency2.setAdapter(adapter);
 
-        euro2.setOnClickListener(new View.OnClickListener() {
+        submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                button_clicked_process2(euro2);
+                    ConvertCurrency();
             }
-        });
-        pound2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                button_clicked_process2(pound2);
-            }
-        });
-        dollar2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                button_clicked_process2(dollar2);
-            }
-        });
-
-        rupee2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                button_clicked_process2(rupee2);
-            }
-        });
-        bitcoin2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                button_clicked_process2(bitcoin2);
-            }
-        });
-        australian_dollar2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                button_clicked_process2(australian_dollar2);
-            }
-        });
-        canadian_dollar2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                button_clicked_process2(canadian_dollar2);
-            }
-        });
-        dinar2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                button_clicked_process2(dinar2);
-            }
-        });
-        yen2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               button_clicked_process2(yen2);
-            }
-        });
 
 
-        //do for every
+        });
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                autoCompleteTextView_currency1.setText("");
+                autoCompleteTextView_currency2.setText("");
+                result.setText("");
+                Input.setText("");
 
-       submit.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               Button fromCurrency = pressedButtons1.get(0);
-               Button toCurrency = pressedButtons2.get(0);
-               if(fromCurrency == toCurrency){
-                   Context context = getApplicationContext();
-                   CharSequence text = "Please select different currencies to convert";
-                   int duration = Toast.LENGTH_SHORT;
-                   Toast toast = Toast.makeText(context, text, duration);
-                   toast.show();
-               }else{
-                   ConvertCurrency(fromCurrency,toCurrency);
-               }
+            }
 
-           }
-
-
-       });
-       clear.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               result.setText("0.00");
-               Input.setText(null);
-               if(!pressedButtons1.isEmpty()){
-                   pressedButtons1.get(0).setBackgroundColor(getResources().getColor(R.color.defaultColor));
-                   pressedButtons1.clear();
-               }
-               if(!pressedButtons2.isEmpty()){
-                   pressedButtons2.get(0).setBackgroundColor(getResources().getColor(R.color.defaultColor));
-                   pressedButtons2.clear();
-               }
-           }
-       });
-
+        });
     }
-    public void button_clicked_process(Button b){
-        b.setBackgroundColor(getResources().getColor(R.color.buttonPressed));
-        if(!pressedButtons1.isEmpty()){
-            pressedButtons1.get(0).setBackgroundColor(getResources().getColor(R.color.defaultColor));
-            pressedButtons1.remove(0);
-        }
-        pressedButtons1.add(b);
-    }
-
-
-    public void button_clicked_process2(Button b){
-        b.setBackgroundColor(getResources().getColor(R.color.buttonPressed));
-        if(!pressedButtons2.isEmpty()){
-            pressedButtons2.get(0).setBackgroundColor(getResources().getColor(R.color.defaultColor));
-            pressedButtons2.remove(0);
-        }
-        pressedButtons2.add(b);
-    }
-
-
-
-    public void ConvertCurrency(Button f,Button t){
-
-        String input =  Input.getText().toString();
-        if(TextUtils.isEmpty(input)){
-            Input.setError("Empty User Input");
-        }
-        result.setText(null);
-        if (f.getText().toString().equals(t.getText().toString())){
-            Toast.makeText(MainActivity.this,"Select two different currencies!",Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-
-        if(f == euro){
-            from = "euro";
-            if(t == rupee2) {
-                to = "inr";
-            }else if(t == dollar2){
-                to = "usd";
-            }else if(t == australian_dollar2){
-                to = "aud";
-            }else if(t == canadian_dollar2){
-                to = "cad";
-            }else if(t == yen2){
-                to = "yen";
-            }else if(t == bitcoin2){
-                to = "bitcoin";
-            }else if(t == pound2){
-                to = "pound";
-            }else if(t == dinar2){
-                to = "dinar";
-            }
-        }else if(f == pound){
-            from = "pound";
-            if(t == rupee2) {
-                to = "rupee";
-            }else if(t == dollar2){
-                to = "usd";
-            }else if(t == australian_dollar2){
-                to = "aud";
-            }else if(t == canadian_dollar2){
-                to = "cad";
-            }else if(t == yen2){
-                to = "yen";
-            }else if(t == bitcoin2){
-                to = "bitcoin";
-            }else if(t == euro2){
-                to = "euro";
-            }else if(t == dinar2){
-                to = "dinar";
-            }
-        }else if(f == dollar){
-            from = "dollar";
-            if(t == rupee2) {
-                to = "rupee";
-            }else if(t == pound2){
-                to = "pound";
-            }else if(t == australian_dollar2){
-                to = "aud";
-            }else if(t == canadian_dollar2){
-                to = "cad";
-            }else if(t == yen2){
-                to = "yen";
-            }else if(t == bitcoin2){
-                to = "bitcoin";
-            }else if(t == euro2){
-                to = "euro";
-            }else if(t == dinar2){
-                to = "dinar";
-            }
-        }else if(f == rupee){
-            from = "rupee";
-            if(t == dollar2) {
-                to = "usd";
-            }else if(t == pound2){
-                to = "pound";
-            }else if(t == australian_dollar2){
-                to = "aud";
-            }else if(t == canadian_dollar2){
-                to = "cad";
-            }else if(t == yen2){
-                to = "yen";
-            }else if(t == bitcoin2){
-                to = "bitcoin";
-            }else if(t == euro2){
-                to = "euro";
-            }else if(t == dinar2){
-                to = "dinar";
-            }
-        }else if(f == australian_dollar){
-            from = "aud";
-            if(t == dollar2) {
-                to = "usd";
-            }else if(t == pound2){
-                to = "pound";
-            }else if(t == rupee2){
-                to = "rupee";
-            }else if(t == canadian_dollar2){
-                to = "cad";
-            }else if(t == yen2){
-                to = "yen";
-            }else if(t == bitcoin2){
-                to = "bitcoin";
-            }else if(t == euro2){
-                to = "euro";
-            }else if(t == dinar2){
-                to = "dinar";
-            }
-        }else if(f == canadian_dollar){
-            from = "cad";
-            if(t == dollar2) {
-                to = "usd";
-            }else if(t == pound2){
-                to = "pound";
-            }else if(t == rupee2){
-                to = "rupee";
-            }else if(t == australian_dollar2){
-                to = "aud";
-            }else if(t == yen2){
-                to = "yen";
-            }else if(t == bitcoin2){
-                to = "bitcoin";
-            }else if(t == euro2){
-                to = "euro";
-            }else if(t == dinar2){
-                to = "dinar";
-            }
-        }else if(f == yen){
-            from = "yen";
-            if(t == dollar2) {
-                to = "usd";
-            }else if(t == pound2){
-                to = "pound";
-            }else if(t == rupee2){
-                to = "rupee";
-            }else if(t == australian_dollar2){
-                to = "aud";
-            }else if(t == canadian_dollar2){
-                to = "cad";
-            }else if(t == bitcoin2){
-                to = "bitcoin";
-            }else if(t == euro2){
-                to = "euro";
-            }else if(t == dinar2){
-                to = "dinar";
-            }
-        }else if(f == bitcoin){
-            from = "bitcoin";
-            if(t == dollar2) {
-                to = "usd";
-            }else if(t == pound2){
-                to = "pound";
-            }else if(t == rupee2){
-                to = "rupee";
-            }else if(t == australian_dollar2){
-                to = "aud";
-            }else if(t == yen2){
-                to = "yen";
-            }else if(t == euro2){
-                to = "euro";
-            }else if(t == dinar2){
-                to = "dinar";
-            }
-        }else if(f == dinar){
-            from = "dinar";
-            if(t == dollar2) {
-                to = "usd";
-            }else if(t == pound2){
-                to = "pound";
-            }else if(t == rupee2){
-                to = "rupee";
-            }else if(t == australian_dollar2){
-                to = "aud";
-            }else if(t == canadian_dollar2){
-                to = "cad";
-            }else if(t == yen2){
-                to = "yen";
-            }else if(t == euro2){
-                to = "euro";
-            }else if(t == bitcoin2){
-                to = "bitcoin";
-            }
-        }
+    public void ConvertCurrency(){
 
         new doIT().execute();
     }
-    public class doIT extends AsyncTask<Void,Void,Void> {
+
+    public class doIT extends AsyncTask<Void, Void, Void> {
         String value = "";
+
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                URL = "https://www.google.com/search?q="+Input.getText().toString()+"+"+from+"+"+"to"+"+"+to+"&oq=10+&aqs=chrome.6.69i59j69i57j35i39j0i67i457j0i67l2j0i10i67j69i65.6429j1j7&sourceid=chrome&ie=UTF-8";
+                URL = "https://www.google.com/search?q=" + Input.getText().toString() + "+" + autoCompleteTextView_currency1.getText().toString() + "+" + "to" + "+" + autoCompleteTextView_currency2.getText().toString() + "&oq=10+&aqs=chrome.6.69i59j69i57j35i39j0i67i457j0i67l2j0i10i67j69i65.6429j1j7&sourceid=chrome&ie=UTF-8";
                 Document document = Jsoup.connect(URL).get();
                 Elements elements = document.getElementsByClass("DFlfde SwHCTb");
-                for (Element element: elements){
+                for (Element element : elements) {
                     value = String.valueOf(element.text());
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            } return null;
+            }
+            return null;
         }
+
         @Override
         protected void onPostExecute(Void aVoid) {
             result.setText(value);
             super.onPostExecute(aVoid);
         }
     }
+
 }
